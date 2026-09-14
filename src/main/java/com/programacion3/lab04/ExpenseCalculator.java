@@ -19,13 +19,14 @@ public class ExpenseCalculator {
     private static final double PER_MILE = 0.27;
     
     public Map<String, Double> calculateExpenses(
-            int daysOnTrip, double foodExpense, double airfare, double carRentalFees, double milesDriven,
+            int daysOnTrip, double foodExpense, double airfare, double carRentalFees, double milesDriven, int amountOfParkingFees, double parkingFee,
             double taxiCharges, double registrationFees, double lodgingCharges) {
         Map<String, Double> expenses = new HashMap<>();
         
         expenses.put("Meals", daysOnTrip * foodExpense);
         expenses.put("Airfare", airfare);
         expenses.put("PrivateCar", milesDriven * carRentalFees);
+        expenses.put("ParkingFees", amountOfParkingFees * parkingFee);
         expenses.put("taxiCharges", taxiCharges);
         expenses.put("registrationFees", registrationFees);
         expenses.put("lodgingCharges", lodgingCharges);
@@ -41,17 +42,52 @@ public class ExpenseCalculator {
         return expenses;
     }
     
+    public Map<String, Double> calculateReimbursable(
+            int daysOnTrip, double airfare, double milesDriven, int amountOfParkingFees, double parkingFee,
+            boolean usedTaxi, double registrationFees) {
+        
+        Map<String, Double> reimbursable = new HashMap<>();
+        
+        double idk = usedTaxi ? 1 : 0;
+        double totalParking = amountOfParkingFees * parkingFee / daysOnTrip;
+        
+        double parkinReimbursable = totalParking > PARKING_BUDGET ? daysOnTrip * PARKING_BUDGET : totalParking;
+        
+        reimbursable.put("Meals", daysOnTrip * MEAL_BUDGET);
+        reimbursable.put("Airfare", airfare);
+        reimbursable.put("PrivateCar", milesDriven * PER_MILE);
+        reimbursable.put("ParkingFees", parkinReimbursable);
+        reimbursable.put("taxiCharges", idk * TAXI_BUDGET * daysOnTrip);
+        reimbursable.put("registrationFees", registrationFees);
+        reimbursable.put("lodgingCharges", LODGING_BUDGET * (daysOnTrip - 1));
+        
+        double total = 0;
+        
+        for (double expense: reimbursable.values()) {
+            total += expense;
+        }
+        
+        reimbursable.put("total", total);
+        
+        return reimbursable;
+    }
+    
     public double calculateTotalExpenses(
-            int daysOnTrip, double foodExpense, double airfare, double carRentalFees, double milesDriven,
+            int daysOnTrip, double foodExpense, double airfare, double carRentalFees, double milesDriven, int amountOfParkingFees, double parkingFee,
             double taxiCharges, double registrationFees, double lodgingCharges) {
         
-        return daysOnTrip * foodExpense + airfare + milesDriven * carRentalFees + taxiCharges + registrationFees + lodgingCharges;
+        return daysOnTrip * foodExpense + airfare + milesDriven * carRentalFees + taxiCharges + registrationFees + lodgingCharges + amountOfParkingFees * parkingFee;
     }
     
     public double calculateTotalReimbursable(
-            int daysOnTrip, double airfare, double milesDriven,
-            double taxiCharges, double registrationFees, double lodgingCharges) {
+            int daysOnTrip, double airfare, double milesDriven, int amountOfParkingFees, double parkingFee,
+            boolean usedTaxi, double registrationFees) {
+        double idk = usedTaxi ? 1 : 0;
+        double totalParking = amountOfParkingFees * parkingFee / daysOnTrip;
         
-        return daysOnTrip * MEAL_BUDGET + airfare + milesDriven * PER_MILE +  +  registrationFees + lodgingCharges;
+        double parkinReimbursable = totalParking > PARKING_BUDGET ? daysOnTrip * PARKING_BUDGET : totalParking;
+        
+        return (daysOnTrip * MEAL_BUDGET) + airfare + (milesDriven * PER_MILE) + (idk * TAXI_BUDGET * daysOnTrip) +  registrationFees + (LODGING_BUDGET * (daysOnTrip - 1)) + parkinReimbursable;
     }
 }
+     
