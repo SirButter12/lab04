@@ -29,7 +29,7 @@ public class App extends Application {
         content.setHgap(10);
         content.setAlignment(Pos.CENTER);
         
-        root.setPadding(new Insets(20));
+        root.setPadding(new Insets(10));
         
         List<Label> labels = new ArrayList();
         
@@ -58,11 +58,16 @@ public class App extends Application {
         Button calculateButt = new Button("Calculate");
         Label output = new Label("");
         
-        content.add(calculateButt, 0, amountElements);
-        content.add(output, 1, amountElements);
+        GridPane bottom = new GridPane();
+        bottom.add(calculateButt, 0, 0);
+        bottom.add(output, 1, 0);
         
+        bottom.setVgap(10);
+        bottom.setHgap(10);
+        bottom.setAlignment(Pos.CENTER);
         
         root.setCenter(content);
+        root.setBottom(bottom);
         var scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
