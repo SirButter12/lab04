@@ -1,7 +1,9 @@
 package com.programacion3.lab04;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -38,6 +40,7 @@ public class App extends Application {
         labels.add(new Label("Amount of car rental fees, if any"));
         labels.add(new Label("Number of miles driven, if a private vehicle was used"));
         labels.add(new Label("Amount of parking fees, if any"));
+        labels.add(new Label("parking fees, if any"));
         labels.add(new Label("Amount of taxi charges, if any"));
         labels.add(new Label("Conference or seminar registration fees, if any"));
         labels.add(new Label("Lodging charges, per night"));
@@ -57,6 +60,30 @@ public class App extends Application {
         
         Button calculateButt = new Button("Calculate");
         Label output = new Label("");
+        
+        List<Double> numInput = new ArrayList();
+        
+        calculateButt.setOnAction(e -> {
+            for (TextField text: input) {
+                String str = text.getCharacters().toString();
+                
+                if (str.isEmpty()) {
+                    numInput.add(0.0);
+                } else {
+                    numInput.add(Double.parseDouble(str));
+                }
+            }
+            
+            double totalExpense = ExpenseCalculator.calculateTotalExpenses(numInput.get(0), numInput.get(1), numInput.get(2), numInput.get(3)
+                    , numInput.get(4), numInput.get(5), numInput.get(6), numInput.get(7), numInput.get(8), numInput.get(9));
+            
+            boolean usedATaxi = numInput.get(7) == 0 ? false: true;
+            
+            double totalReimbursable = ExpenseCalculator.calculateTotalReimbursable(numInput.get(0), numInput.get(2), numInput.get(4),
+                    numInput.get(5), numInput.get(6), usedATaxi, numInput.get(8));
+            
+            double balance = totalReimbursable - totalExpense;
+        });
         
         GridPane bottom = new GridPane();
         bottom.add(calculateButt, 0, 0);
