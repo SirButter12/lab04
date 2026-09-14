@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
@@ -34,6 +33,7 @@ public class App extends Application {
         List<Label> labels = new ArrayList();
         
         labels.add(new Label("number of days on the trip"));
+        labels.add(new Label("food expenses, per day"));
         labels.add(new Label("Amount of airfare, if any"));
         labels.add(new Label("Amount of car rental fees, if any"));
         labels.add(new Label("Number of miles driven, if a private vehicle was used"));
