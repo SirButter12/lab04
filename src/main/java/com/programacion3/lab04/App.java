@@ -3,6 +3,8 @@ package com.programacion3.lab04;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +25,12 @@ public class App extends Application {
         BorderPane root = new BorderPane();
         GridPane content = new GridPane();
         
-      
+        content.setVgap(10);
+        content.setHgap(10);
+        content.setAlignment(Pos.CENTER);
+        
+        root.setPadding(new Insets(20));
+        
         List<Label> labels = new ArrayList();
         
         labels.add(new Label("number of days on the trip"));
@@ -49,12 +56,14 @@ public class App extends Application {
         }
         
         Button calculateButt = new Button("Calculate");
+        Label output = new Label("");
         
         content.add(calculateButt, 0, amountElements);
+        content.add(output, 1, amountElements);
         
         
         root.setCenter(content);
-        var scene = new Scene(root , 640, 480);
+        var scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
