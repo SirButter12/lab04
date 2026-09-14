@@ -1,9 +1,7 @@
 package com.programacion3.lab04;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,7 +26,7 @@ public class App extends Application {
         
         content.setVgap(10);
         content.setHgap(10);
-        content.setAlignment(Pos.CENTER);
+        content.setAlignment(Pos.TOP_CENTER);
         
         root.setPadding(new Insets(10));
         
@@ -59,18 +57,26 @@ public class App extends Application {
         }
         
         Button calculateButt = new Button("Calculate");
-        Label output = new Label("");
-        
+        content.add(calculateButt, 1, amountElements);
+        GridPane bottom = new GridPane();
         List<Double> numInput = new ArrayList();
         
         calculateButt.setOnAction(e -> {
+            numInput.clear();
+            bottom.getChildren().clear();
+                    
             for (TextField text: input) {
                 String str = text.getCharacters().toString();
-                
+                 
                 if (str.isEmpty()) {
                     numInput.add(0.0);
                 } else {
-                    numInput.add(Double.parseDouble(str));
+                    try {
+                        numInput.add(Double.parseDouble(str));
+                    } catch (NumberFormatException p){
+                        bottom.add(new Label("Invalid Input fuckass retard"), 0 , 0);
+                        return;
+                    }
                 }
             }
             
@@ -83,19 +89,26 @@ public class App extends Application {
                     numInput.get(5), numInput.get(6), usedATaxi, numInput.get(8));
             
             double balance = totalReimbursable - totalExpense;
+            
+            bottom.add(new Label("Total expenses: "), 0, 1);
+            bottom.add(new Label("Allowed:"), 0, 2);
+            bottom.add(new Label("Balance:"), 0, 3);
+            bottom.add(new Label(String.format("$%.2f", totalExpense)), 1, 1);
+            bottom.add(new Label(String.format("$%.2f", totalReimbursable)), 1, 2);
+            bottom.add(new Label(String.format("$%.2f", balance)), 1, 3);
+            
+            
         });
-        
-        GridPane bottom = new GridPane();
-        bottom.add(calculateButt, 0, 0);
-        bottom.add(output, 1, 0);
         
         bottom.setVgap(10);
         bottom.setHgap(10);
         bottom.setAlignment(Pos.CENTER);
-        
-        root.setCenter(content);
+            
         root.setBottom(bottom);
-        var scene = new Scene(root);
+        root.setCenter(content);
+        
+        var scene = new Scene(root, 580, 530);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
