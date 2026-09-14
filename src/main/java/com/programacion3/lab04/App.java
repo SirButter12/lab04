@@ -74,7 +74,7 @@ public class App extends Application {
                     try {
                         numInput.add(Double.parseDouble(str));
                     } catch (NumberFormatException p){
-                        bottom.add(new Label("Invalid Input fuckass retard"), 0 , 0);
+                        bottom.add(new Label("Invalid Input!"), 0 , 0);
                         return;
                     }
                 }
