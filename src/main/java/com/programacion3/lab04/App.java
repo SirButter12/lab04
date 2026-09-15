@@ -107,7 +107,8 @@ public class App extends Application {
         root.setBottom(bottom);
         root.setCenter(content);
         
-        var scene = new Scene(root, 580, 530);
+        Scene scene = new Scene(root, 680, 630);
+       scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
